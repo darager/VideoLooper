@@ -1,31 +1,26 @@
-let buttonContainer = document.getElementById("buttonContainer");
+document.getElementById("playpauseVideo").addEventListener("click", () => execute(startStopVideo));
+document.getElementById("forwardVideo").addEventListener("click", () => execute(forwardVideo));
+document.getElementById("slowVideo").addEventListener("click", () => execute(setSpeed));
 
-buttonContainer.addEventListener("click", async (e) => {
+async function execute(f) {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  let buttonId = e.target.id;
-  let onClick = getButtonFunction(buttonId);
-
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    function: onClick
+    function: f
   });
-});
-
-function getButtonFunction(buttonId) {
-  var onClick;
-  switch (buttonId) {
-    case "playpauseVideo": onClick = startStopVideo;
-  }
-
-  return onClick;
 }
 
 function startStopVideo() {
   var video = document.getElementsByTagName("video")[0];
+  (video.paused) ? video.play() : video.pause();
+}
 
-  if(video.paused) {
-    video.play();
-  } else {
-    video.pause();
-  }
+function forwardVideo() {
+  var video = document.getElementsByTagName("video")[0];
+  video.currentTime = video.currentTime + 5;
+}
+
+function setSpeed() {
+  var video = document.getElementsByTagName("video")[0];
+  video.playbackRate = 0.5;
 }
