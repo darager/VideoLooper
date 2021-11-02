@@ -1,18 +1,24 @@
-let changeColor = document.getElementById("changeColor");
-let playpauseVideo = document.getElementById("playpauseVideo");
+let buttonContainer = document.getElementById("buttonContainer");
 
-chrome.storage.sync.get("color", ({ color }) => {
-  changeColor.style.backgroundColor = color;
-});
-
-playpauseVideo.addEventListener("click", async () => {
+buttonContainer.addEventListener("click", async (e) => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  let buttonId = e.target.id;
+  let onClick = getButtonFunction(buttonId);
 
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    function: startStopVideo,
+    function: onClick
   });
 });
+
+function getButtonFunction(buttonId) {
+  var onClick;
+  switch (buttonId) {
+    case "playpauseVideo": onClick = startStopVideo;
+  }
+
+  return onClick;
+}
 
 function startStopVideo() {
   var video = document.getElementsByTagName("video")[0];
