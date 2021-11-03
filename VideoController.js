@@ -39,11 +39,11 @@ function moveVideoBack() {
   });
 }
 
-function setSpeed() {
-  injectAndRun(() => {
+function setSpeed(speed) {
+  injectAndRun((speed) => {
     var video = document.getElementsByTagName("video")[0];
-    video.playbackRate = 0.5;
-  });
+    video.playbackRate = speed;
+  }, [speed]);
 }
 
 function getCurrentTime() {

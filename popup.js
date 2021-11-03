@@ -13,7 +13,7 @@ document
   .addEventListener("click", controller.ReverseVideo);
 document
   .getElementById("slowVideo")
-  .addEventListener("click", controller.ChangeSpeed);
+  .addEventListener("click", () => controller.ChangeSpeed(0.5));
 document
   .getElementById("loop")
   .addEventListener("click", controller.ToggleLoop);
