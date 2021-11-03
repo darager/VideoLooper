@@ -1,4 +1,12 @@
-async function execute(f, args, callback) {
+export class VideoController {
+  PauseResume = startStopVideo;
+  ForwardVideo = moveVideoForward;
+  ReverseVideo = moveVideoBack;
+  ChangeSpeed = setSpeed;
+  ToggleLoop = loopVideo;
+}
+
+async function injectAndRun(f, args, callback) {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   chrome.scripting.executeScript(
     {
@@ -10,32 +18,32 @@ async function execute(f, args, callback) {
   );
 }
 
-export function startStopVideo() {
-  execute(() => {
+function startStopVideo() {
+  injectAndRun(() => {
     var video = document.getElementsByTagName("video")[0];
     video.paused ? video.play() : video.pause();
-  })
+  });
 }
 
-export function moveVideoForward() {
-  execute(() => {
+function moveVideoForward() {
+  injectAndRun(() => {
     var video = document.getElementsByTagName("video")[0];
     video.currentTime = video.currentTime + 5;
-  })
+  });
 }
 
-export function moveVideoBack() {
-  execute(() => {
+function moveVideoBack() {
+  injectAndRun(() => {
     var video = document.getElementsByTagName("video")[0];
     video.currentTime = video.currentTime - 5;
-  })
+  });
 }
 
-export function setSpeed() {
-  execute(() => {
+function setSpeed() {
+  injectAndRun(() => {
     var video = document.getElementsByTagName("video")[0];
     video.playbackRate = 0.5;
-  })
+  });
 }
 
 function getCurrentTime() {
@@ -51,8 +59,8 @@ function setCurrentTime(time) {
 var startTime;
 var stopTime;
 
-export async function loopVideo() {
-  execute(getCurrentTime, null, (e) => {
+async function loopVideo() {
+  injectAndRun(getCurrentTime, null, (e) => {
     var currentTime = e[0].result;
 
     if (startTime != null && stopTime != null) {
@@ -73,13 +81,13 @@ export async function loopVideo() {
 
 var checkLoop = setInterval(enforceLoop, 0.01);
 async function enforceLoop() {
-  execute(getCurrentTime, null, (e) => {
+  injectAndRun(getCurrentTime, null, (e) => {
     var currentTime = e[0].result;
 
     if (startTime == null || stopTime == null) return;
 
     if (currentTime >= stopTime || currentTime < startTime) {
-      execute(setCurrentTime, [startTime]);
+      injectAndRun(setCurrentTime, [startTime]);
     }
   });
 }

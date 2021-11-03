@@ -1,23 +1,19 @@
-import {
-  startStopVideo,
-  moveVideoForward,
-  moveVideoBack,
-  setSpeed,
-  loopVideo,
-} from "./VideoController.js";
+import { VideoController } from "./VideoController.js";
+
+var controller = new VideoController();
 
 document
   .getElementById("playpauseVideo")
-  .addEventListener("click", startStopVideo);
+  .addEventListener("click", controller.PauseResume);
 document
   .getElementById("forwardVideo")
-  .addEventListener("click", moveVideoForward);
+  .addEventListener("click", controller.ForwardVideo);
 document
   .getElementById("backVideo")
-  .addEventListener("click", moveVideoBack);
+  .addEventListener("click", controller.ReverseVideo);
 document
   .getElementById("slowVideo")
-  .addEventListener("click", setSpeed);
+  .addEventListener("click", controller.ChangeSpeed);
 document
   .getElementById("loop")
-  .addEventListener("click", loopVideo);
+  .addEventListener("click", controller.ToggleLoop);
