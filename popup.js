@@ -1,21 +1,13 @@
-document
-  .getElementById("playpauseVideo")
-  .addEventListener("click", () => sendCommand("play-pause"));
-document
-  .getElementById("forwardVideo")
-  .addEventListener("click", () => sendCommand("move-video-forward"));
-// document
-//   .getElementById("backVideo")
-//   .addEventListener("click", controller.ReverseVideo);
-// document
-//   .getElementById("slowVideo")
-//   .addEventListener("click", () => controller.ChangeSpeed(0.5));
-// document
-//   .getElementById("loop")
-//   .addEventListener("click", controller.ToggleLoop);
+registerOnClickCommand("playpauseVideo", "play-pause");
+registerOnClickCommand("forwardVideo", "move-video-forward");
+
+function registerOnClickCommand(elementId, command) {
+  document
+    .getElementById(elementId)
+    .addEventListener("click", () => sendCommand(command));
+}
 
 function sendCommand(command) {
-  console.log("send from popup: ", command);
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     var activeTab = tabs[0].id
     var message = { cmd: command };
