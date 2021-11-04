@@ -15,6 +15,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
       moveVideoBack();
       break;
     case "toggle-speed":
+      toggleBetweenSpeeds();
       break;
     case "increase-speed":
       increaseSpeed();
@@ -52,13 +53,29 @@ function forwardVideo(seconds) {
   video.currentTime = video.currentTime + seconds;
 }
 
-// vars
-// "speedValues"
-// "changeSpeedBy"
-// "preferedSpeed"
+function toggleBetweenSpeeds() {
+  let sortByDescending = (arr) => arr.sort(function(a, b){return b-a});
 
-//    "toggle-speed"
+  getValue("speedValues", (speeds) => {
+    let curSpeed = getSpeed();
 
+    sortByDescending(speeds);
+    let slowest = speeds[speeds.length -1];
+    let fastest = speeds[0];
+
+    if(curSpeed <= slowest) {
+      setSpeed(fastest);
+    }
+    else {
+      for (speed of speeds) {
+        if((curSpeed - speed) > 0) {
+          setSpeed(speed);
+          break;
+        }
+      }
+    }
+  });
+}
 function resetSpeed() {
   getValue("preferedSpeed", (prefSpeed) => {
     let curSpeed = getSpeed();
@@ -73,16 +90,9 @@ function decreaseSpeed() {
   getValue("changeSpeedBy", (ds) => changeSpeed(-ds));
 }
 function changeSpeed(delta) {
-  let min = 0.1;
-  let max = 5;
-
   var current = getSpeed();
-  var newSpeed = current + delta;
-
-  if(newSpeed > max) newSpeed = max;
-  if(newSpeed < min) newSpeed = min;
-
-  setSpeed(newSpeed);
+  var speed = current + delta;
+  setSpeed(speed);
 }
 function getSpeed() {
   var video = document.getElementsByTagName("video")[0];
@@ -90,6 +100,12 @@ function getSpeed() {
 }
 function setSpeed(speed) {
   var video = document.getElementsByTagName("video")[0];
+
+  let min = 0.1;
+  let max = 5;
+  if(speed > max) speed = max;
+  if(speed < min) speed = min;
+
   video.playbackRate = speed;
 }
 
