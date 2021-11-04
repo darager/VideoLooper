@@ -1,3 +1,15 @@
+// "play-pause"
+// "move-video-forward"
+// "move-video-back"
+// "toggle-speed"
+// "increase-speed"
+// "decrease-speed"
+// "reset-speed"
+// "toggle-loop"
+// "set-loop-start"
+// "set-loop-end"
+// "remove-loop"
+
 registerOnClickCommand("playpauseVideo", "play-pause");
 registerOnClickCommand("forwardVideo", "move-video-forward");
 

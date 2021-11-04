@@ -1,8 +1,5 @@
-console.log("content-script loaded!");
-
 chrome.runtime.onMessage.addListener((request, sender, response) => {
   var cmd = { id: request.cmd };
-  console.log(cmd);
 
   switch (cmd.id) {
     case "play-pause":
@@ -27,12 +24,16 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
       resetSpeed();
       break;
     case "toggle-loop":
+      loopVideo();
       break;
     case "set-loop-start":
+      setLoopStart();
       break;
     case "set-loop-end":
+      setLoopEnd();
       break;
     case "remove-loop":
+      removeLoop();
       break;
   }
 });
@@ -54,21 +55,23 @@ function forwardVideo(seconds) {
 }
 
 function toggleBetweenSpeeds() {
-  let sortByDescending = (arr) => arr.sort(function(a, b){return b-a});
+  let sortByDescending = (arr) =>
+    arr.sort(function (a, b) {
+      return b - a;
+    });
 
   getValue("speedValues", (speeds) => {
     let curSpeed = getSpeed();
 
     sortByDescending(speeds);
-    let slowest = speeds[speeds.length -1];
+    let slowest = speeds[speeds.length - 1];
     let fastest = speeds[0];
 
-    if(curSpeed <= slowest) {
+    if (curSpeed <= slowest) {
       setSpeed(fastest);
-    }
-    else {
+    } else {
       for (speed of speeds) {
-        if((curSpeed - speed) > 0) {
+        if (curSpeed - speed > 0) {
           setSpeed(speed);
           break;
         }
@@ -79,7 +82,7 @@ function toggleBetweenSpeeds() {
 function resetSpeed() {
   getValue("preferedSpeed", (prefSpeed) => {
     let curSpeed = getSpeed();
-    var newSpeed = (curSpeed != 1) ? 1 : prefSpeed;
+    var newSpeed = curSpeed != 1 ? 1 : prefSpeed;
     setSpeed(newSpeed);
   });
 }
@@ -103,8 +106,8 @@ function setSpeed(speed) {
 
   let min = 0.1;
   let max = 5;
-  if(speed > max) speed = max;
-  if(speed < min) speed = min;
+  if (speed > max) speed = max;
+  if (speed < min) speed = min;
 
   video.playbackRate = speed;
 }
@@ -123,6 +126,16 @@ function setCurrentTime(time) {
 var startTime;
 var stopTime;
 
+function setLoopStart() {
+  startTime = getCurrentTime();
+}
+function setLoopEnd() {
+  if (startTime != null) stopTime = getCurrentTime();
+}
+function removeLoop() {
+  startTime = null;
+  stopTime = null;
+}
 async function loopVideo() {
   var currentTime = getCurrentTime();
 
@@ -156,5 +169,5 @@ function getValue(key, f) {
   chrome.storage.local.get(key, (result) => {
     var value = result[key];
     f(value);
-  })
+  });
 }
