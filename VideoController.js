@@ -39,10 +39,10 @@ function startStopVideo() {
 }
 
 function moveVideoForward() {
-  forwardVideo(5);
+  getValue("moveVideoBy", (s) => forwardVideo(s));
 }
 function moveVideoBack() {
-  forwardVideo(-5);
+  getValue("moveVideoBy", (s) => forwardVideo(-s));
 }
 function forwardVideo(seconds) {
   var video = document.getElementsByTagName("video")[0];
@@ -95,4 +95,11 @@ async function enforceLoop() {
   if (currentTime >= stopTime || currentTime < startTime) {
     setCurrentTime(startTime);
   }
+}
+
+function getValue(key, f) {
+  chrome.storage.local.get(key, (result) => {
+    var value = result[key];
+    f(value);
+  })
 }
