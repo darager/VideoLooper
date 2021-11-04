@@ -3,7 +3,7 @@
   "description": "Build an Extension!",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["scripting", "activeTab", "tabs"],
+  "permissions": ["scripting", "activeTab", "tabs", "contextMenus"],
   "background": {
     "service_worker": "background.js"
   },
@@ -24,28 +24,47 @@
   },
   "commands": {
     "play-pause": {
-      "description": "Resume/Pause video"
-    },
-    "change-speed": {
-      "suggested_key": "Alt+I",
-      "description": "Change speed of video"
+      "suggested_key": "Alt+K",
+      "description": "Resume/Pause Video"
     },
     "move-video-forward": {
-      "suggested_key": "Alt+L",
-      "description": "Forward video 5 seconds"
+      "description": "Forward video a few seconds"
     },
     "move-video-back": {
       "suggested_key": "Alt+J",
-      "description": "Reverse video 5 seconds"
+      "description": "Reverse video a few seconds"
     },
-    "toogle-loop": {
+    "toggle-speed": {
+      "suggested_key": "Alt+I",
+      "description": "Change video speed"
+    },
+    "increase-speed": {
+      "description": "Increase video speed"
+    },
+    "decrease-speed": {
+      "description": "Decrease video speed"
+    },
+    "reset-speed": {
+      "description": "Toggle between 1x and prefered video speed"
+    },
+    "toggle-loop": {
       "suggested_key": "Alt+U",
-      "description": "Toogle video loop"
+      "description": "Control video looping"
+    },
+    "set-loop-start": {
+      "description": "Set start of video loop"
+    },
+    "set-loop-end": {
+      "description": "Set end of video loop"
+    },
+    "remove-loop": {
+      "description": "Remove video loop"
     }
   },
   "content_scripts": [
-  {
-    "matches": ["<all_urls>"],
-    "js": ["videoController.js"]
-  }]
+    {
+      "matches": ["<all_urls>"],
+      "js": ["videoController.js"]
+    }
+  ]
 }

@@ -1,106 +1,85 @@
-// class VideoController {
-//   PauseResume = startStopVideo;
-//   ForwardVideo = moveVideoForward;
-//   ReverseVideo = moveVideoBack;
-//   ChangeSpeed = setSpeed;
-//   ToggleLoop = loopVideo;
-// }
+console.log("content-script loaded!");
 
-console.log('content-script loaded!');
+// play-pause
+// move-video-forward
+// move-video-back
+// toggle-speed
+// increase-speed
+// decrease-speed
+// reset-speed
+// toggle-loop
+// set-loop-start
+// set-loop-end
+// remove-loop
 
 chrome.runtime.onMessage.addListener((request, sender, response) => {
-  console.log(request);
-  startStopVideo();
-})
+  var cmd = {id: request.cmd}
+  console.log(cmd);
+
+  if(cmd.id == "play-pause") {
+    startStopVideo();
+  }
+});
 
 function startStopVideo() {
   var video = document.getElementsByTagName("video")[0];
   video.paused ? video.play() : video.pause();
 }
 
+function moveVideoForward() {
+  var video = document.getElementsByTagName("video")[0];
+  video.currentTime = video.currentTime + 5;
+}
 
-// async function injectAndRun(f, args, callback) {
-//   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-//   chrome.scripting.executeScript(
-//     {
-//       target: { tabId: tab.id },
-//       function: f,
-//       args: args,
-//     },
-//     callback
-//   );
-// }
+function moveVideoBack() {
+  var video = document.getElementsByTagName("video")[0];
+  video.currentTime = video.currentTime - 5;
+}
 
-// function startStopVideo() {
-//   injectAndRun(() => {
-//     var video = document.getElementsByTagName("video")[0];
-//     video.paused ? video.play() : video.pause();
-//   });
-// }
+function setSpeed(speed) {
+  var video = document.getElementsByTagName("video")[0];
+  video.playbackRate = speed;
+}
 
-// function moveVideoForward() {
-//   injectAndRun(() => {
-//     var video = document.getElementsByTagName("video")[0];
-//     video.currentTime = video.currentTime + 5;
-//   });
-// }
+function getCurrentTime() {
+  var video = document.getElementsByTagName("video")[0];
+  var time = video.currentTime;
+  return time;
+}
 
-// function moveVideoBack() {
-//   injectAndRun(() => {
-//     var video = document.getElementsByTagName("video")[0];
-//     video.currentTime = video.currentTime - 5;
-//   });
-// }
+function setCurrentTime(time) {
+  var video = document.getElementsByTagName("video")[0];
+  video.currentTime = time;
+}
 
-// function setSpeed(speed) {
-//   injectAndRun((speed) => {
-//     var video = document.getElementsByTagName("video")[0];
-//     video.playbackRate = speed;
-//   }, [speed]);
-// }
+var startTime;
+var stopTime;
 
-// function getCurrentTime() {
-//   var video = document.getElementsByTagName("video")[0];
-//   return video.currentTime;
-// }
+async function loopVideo() {
+  var currentTime = getCurrentTime();
 
-// function setCurrentTime(time) {
-//   var video = document.getElementsByTagName("video")[0];
-//   video.currentTime = time;
-// }
+  if (startTime != null && stopTime != null) {
+    startTime = null;
+    stopTime = null;
+  } else if (startTime == null && stopTime == null) {
+    startTime = currentTime;
+  } else if (startTime != null && stopTime == null) {
+    stopTime = currentTime;
 
-// var startTime;
-// var stopTime;
+    if (stopTime <= startTime) {
+      startTime = null;
+      stopTime = null;
+    }
+  }
+}
 
-// async function loopVideo() {
-//   injectAndRun(getCurrentTime, null, (e) => {
-//     var currentTime = e[0].result;
+var checkLoop = setInterval(enforceLoop, 0.01);
+async function enforceLoop() {
+  var currentTime = getCurrentTime();
 
-//     if (startTime != null && stopTime != null) {
-//       startTime = null;
-//       stopTime = null;
-//     } else if (startTime == null && stopTime == null) {
-//       startTime = currentTime;
-//     } else if (startTime != null && stopTime == null) {
-//       stopTime = currentTime;
+  if (startTime == null || stopTime == null) return;
 
-//       if (stopTime <= startTime) {
-//         startTime = null;
-//         stopTime = null;
-//       }
-//     }
-//   });
-// }
-
-// var checkLoop = setInterval(enforceLoop, 0.01);
-// async function enforceLoop() {
-//   injectAndRun(getCurrentTime, null, (e) => {
-//     var currentTime = e[0].result;
-
-//     if (startTime == null || stopTime == null) return;
-
-//     if (currentTime >= stopTime || currentTime < startTime) {
-//       injectAndRun(setCurrentTime, [startTime]);
-//     }
-//   });
-// }
+  if (currentTime >= stopTime || currentTime < startTime) {
+    setCurrentTime(startTime);
+  }
+}
