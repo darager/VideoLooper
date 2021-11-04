@@ -4,6 +4,25 @@
     <title>Options</title>
   </head>
   <body>
+    Forward/Rewind by:
+    <input id="moveVideoBy" type="number" min="0"/>
+    <br/>
+
+    Preferred Speed:
+    <input id="preferedSpeed" type="number" min="0.1" max="5"/>
+    <br/>
+
+    Increase/Decrease Speed by:
+    <input id="changeSpeedBy" type="number" min="0"/>
+    <br/>
+
+    Toggle to these Speeds:
+    <input id="speedValues" type="text"/>
+    <br/>
+
+    <button id="resetSettings">Reset</button>
+    <button id="saveSettings">Save</button>
+
     <script src="options.js"></script>
   </body>
 </html>
