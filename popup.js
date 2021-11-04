@@ -22,3 +22,15 @@ function sendCommand(command) {
     chrome.tabs.sendMessage(activeTab, message);
   });
 }
+
+document
+  .getElementById("openOptions")
+  .addEventListener("click", openOptionsPage);
+
+function openOptionsPage() {
+  if (chrome.runtime.openOptionsPage) {
+    chrome.runtime.openOptionsPage();
+  } else {
+    window.open(chrome.runtime.getURL('options.html'));
+  }
+}
