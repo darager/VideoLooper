@@ -17,8 +17,10 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     case "toggle-speed":
       break;
     case "increase-speed":
+      increaseSpeed();
       break;
     case "decrease-speed":
+      decreaseSpeed();
       break;
     case "reset-speed":
       break;
@@ -49,6 +51,36 @@ function forwardVideo(seconds) {
   video.currentTime = video.currentTime + seconds;
 }
 
+// vars
+// "speedValues"
+// "changeSpeedBy"
+// "preferedSpeed"
+
+//    "toggle-speed"
+//    "reset-speed"
+
+function increaseSpeed() {
+  getValue("changeSpeedBy", (ds) => changeSpeed(ds));
+}
+function decreaseSpeed() {
+  getValue("changeSpeedBy", (ds) => changeSpeed(-ds));
+}
+function changeSpeed(delta) {
+  let min = 0.1;
+  let max = 5;
+
+  var current = getSpeed();
+  var newSpeed = current + delta;
+
+  if(newSpeed > max) newSpeed = max;
+  if(newSpeed < min) newSpeed = min;
+
+  setSpeed(newSpeed);
+}
+function getSpeed() {
+  var video = document.getElementsByTagName("video")[0];
+  return video.playbackRate;
+}
 function setSpeed(speed) {
   var video = document.getElementsByTagName("video")[0];
   video.playbackRate = speed;
