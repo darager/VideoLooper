@@ -1,6 +1,6 @@
 {
-  "name": "Getting Started Example",
-  "description": "Build an Extension!",
+  "name": "Guitar Video Looper",
+  "description": "Tool to make learning songs by ear easier.",
   "version": "1.0",
   "manifest_version": 3,
   "permissions": ["scripting", "activeTab", "tabs", "contextMenus"],

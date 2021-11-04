@@ -1,23 +1,35 @@
 console.log("content-script loaded!");
 
-// play-pause
-// move-video-forward
-// move-video-back
-// toggle-speed
-// increase-speed
-// decrease-speed
-// reset-speed
-// toggle-loop
-// set-loop-start
-// set-loop-end
-// remove-loop
-
 chrome.runtime.onMessage.addListener((request, sender, response) => {
-  var cmd = {id: request.cmd}
+  var cmd = { id: request.cmd };
   console.log(cmd);
 
-  if(cmd.id == "play-pause") {
-    startStopVideo();
+  switch (cmd.id) {
+    case "play-pause":
+      startStopVideo();
+      break;
+    case "move-video-forward":
+      moveVideoForward();
+      break;
+    case "move-video-back":
+      moveVideoBack();
+      break;
+    case "toggle-speed":
+      break;
+    case "increase-speed":
+      break;
+    case "decrease-speed":
+      break;
+    case "reset-speed":
+      break;
+    case "toggle-loop":
+      break;
+    case "set-loop-start":
+      break;
+    case "set-loop-end":
+      break;
+    case "remove-loop":
+      break;
   }
 });
 
@@ -27,13 +39,14 @@ function startStopVideo() {
 }
 
 function moveVideoForward() {
-  var video = document.getElementsByTagName("video")[0];
-  video.currentTime = video.currentTime + 5;
+  forwardVideo(5);
 }
-
 function moveVideoBack() {
+  forwardVideo(-5);
+}
+function forwardVideo(seconds) {
   var video = document.getElementsByTagName("video")[0];
-  video.currentTime = video.currentTime - 5;
+  video.currentTime = video.currentTime + seconds;
 }
 
 function setSpeed(speed) {
