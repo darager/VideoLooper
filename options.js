@@ -8,21 +8,26 @@ var moveVideoBySelector = document.getElementById("moveVideoBy");
 var changeSpeedBySelector = document.getElementById("changeSpeedBy");
 var preferedSpeedSelector = document.getElementById("preferedSpeed");
 
+speedValuesInput.addEventListener("blur", ensureProperValues);
+moveVideoBySelector.addEventListener("blur", ensureProperValues);
+changeSpeedBySelector.addEventListener("blur", ensureProperValues);
+preferedSpeedSelector.addEventListener("blur", ensureProperValues);
+
 loadValues();
 
 function loadValues() {
-    getValue("speedValues", (v) => speedValuesInput.value = v);
-    getValue("moveVideoBy", (v) => moveVideoBySelector.value = v);
-    getValue("changeSpeedBy", (v) => changeSpeedBySelector.value = v);
-    getValue("preferedSpeed", (v) => preferedSpeedSelector.value = v);
+  getValue("speedValues", (v) => (speedValuesInput.value = v));
+  getValue("moveVideoBy", (v) => (moveVideoBySelector.value = v));
+  getValue("changeSpeedBy", (v) => (changeSpeedBySelector.value = v));
+  getValue("preferedSpeed", (v) => (preferedSpeedSelector.value = v));
 }
 
 function saveSettings() {
   ensureProperValues();
-  storeValue({"speedValues": parseSpeedValues(speedValuesInput.value)});
-  storeValue({"moveVideoBy": moveVideoBySelector.value});
-  storeValue({"changeSpeedBy": changeSpeedBySelector.value});
-  storeValue({"preferedSpeed": preferedSpeedSelector.value});
+  storeValue({ speedValues: parseSpeedValues(speedValuesInput.value) });
+  storeValue({ moveVideoBy: moveVideoBySelector.value });
+  storeValue({ changeSpeedBy: changeSpeedBySelector.value });
+  storeValue({ preferedSpeed: preferedSpeedSelector.value });
 }
 
 function ensureProperValues() {
@@ -35,8 +40,8 @@ function ensureProperValues() {
 }
 
 function constrain(value, min, max) {
-  if(min != null && value < min) value = min;
-  if(max != null && value > max) value = max;
+  if (min != null && value < min) value = min;
+  if (max != null && value > max) value = max;
   return value;
 }
 
@@ -45,13 +50,13 @@ function constrainSpeedValues(values, min, max) {
   let constrainedValues = parsedValues.map((v) => constrain(v, min, max));
   let uniqueValues = [...new Set(constrainedValues)];
   let sorted = uniqueValues.sort();
-  return sorted.join(',');
+  return sorted.join(",");
 }
 
 function parseSpeedValues(string) {
   var values = [];
   let matches = [...string.matchAll(numberExp)];
-  for (match of matches){
+  for (match of matches) {
     let value = match[0];
     values.push(Number(value));
   }
