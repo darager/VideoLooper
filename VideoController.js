@@ -55,15 +55,12 @@ function forwardVideo(seconds) {
 }
 
 function toggleBetweenSpeeds() {
-  let sortByDescending = (arr) =>
-    arr.sort(function (a, b) {
-      return b - a;
-    });
-
   getValue("speedValues", (speeds) => {
     let curSpeed = getSpeed();
 
-    sortByDescending(speeds);
+    // sort in descending order
+    speeds.sort((a, b) => b - a);
+
     let slowest = speeds[speeds.length - 1];
     let fastest = speeds[0];
 
