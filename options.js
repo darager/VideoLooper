@@ -2,7 +2,6 @@ const numberExp = /(\d+\.\d+|\d+)/g;
 
 document.getElementById("resetSettings").addEventListener("click", loadValues);
 document.getElementById("saveSettings").addEventListener("click", saveSettings);
-document.getElementById("ensureProperValues").addEventListener("click", ensureProperValues);
 
 var speedValuesInput = document.getElementById("speedValues");
 var moveVideoBySelector = document.getElementById("moveVideoBy");
