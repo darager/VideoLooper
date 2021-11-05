@@ -10,7 +10,6 @@ var changeSpeedBySelector = document.getElementById("changeSpeedBy");
 var preferedSpeedSelector = document.getElementById("preferedSpeed");
 
 loadValues();
-ensureProperValues();
 
 function loadValues() {
     getValue("speedValues", (v) => speedValuesInput.value = v);
@@ -21,7 +20,7 @@ function loadValues() {
 
 function saveSettings() {
   ensureProperValues();
-  storeValue({"speedValues": speedValuesInput.value});
+  storeValue({"speedValues": parseSpeedValues(speedValuesInput.value)});
   storeValue({"moveVideoBy": moveVideoBySelector.value});
   storeValue({"changeSpeedBy": changeSpeedBySelector.value});
   storeValue({"preferedSpeed": preferedSpeedSelector.value});
@@ -55,7 +54,7 @@ function parseSpeedValues(string) {
   let matches = [...string.matchAll(numberExp)];
   for (match of matches){
     let value = match[0];
-    values.push(value);
+    values.push(Number(value));
   }
   return values;
 }
