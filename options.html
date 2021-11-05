@@ -5,7 +5,7 @@
   </head>
   <body>
     Forward/Rewind by:
-    <input id="moveVideoBy" type="number" min="0"/>
+    <input id="moveVideoBy" type="number" min="0.1"/>
     <br/>
 
     Preferred Speed:
@@ -13,12 +13,14 @@
     <br/>
 
     Increase/Decrease Speed by:
-    <input id="changeSpeedBy" type="number" min="0"/>
+    <input id="changeSpeedBy" type="number" min="0.1"/>
     <br/>
 
     Toggle to these Speeds:
     <input id="speedValues" type="text"/>
     <br/>
+
+    <button id="ensureProperValues">Ensure proper values</button>
 
     <button id="saveSettings">Save</button>
     <button id="resetSettings">Reset</button>
