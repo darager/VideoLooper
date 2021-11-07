@@ -2,26 +2,37 @@
 <html>
   <head>
     <title>Options</title>
+    <link rel="stylesheet" type="text/css" href="options.css" />
   </head>
+
   <body>
-    Forward/Rewind by:
-    <input id="moveVideoBy" type="number" min="0.1"/>
-    <br/>
+    <h1>VideoLooper Settings:</h1>
+    <div class="options">
+      <div class="options-row">
+        <h3>Forward/Rewind by:</h3>
+        <input id="moveVideoBy" type="number" min="0.1" />
+      </div>
 
-    Preferred Speed:
-    <input id="preferedSpeed" type="number" min="0.1" max="5"/>
-    <br/>
+      <div class="options-row">
+        <h3>Preferred Speed:</h3>
+        <input id="preferedSpeed" type="number" min="0.1" max="5" />
+      </div>
 
-    Increase/Decrease Speed by:
-    <input id="changeSpeedBy" type="number" min="0.1"/>
-    <br/>
+      <div class="options-row">
+        <h3>Increase/Decrease Speed by:</h3>
+        <input id="changeSpeedBy" type="number" min="0.1" />
+      </div>
 
-    Toggle to these Speeds:
-    <input id="speedValues" type="text"/>
-    <br/>
+      <div class="options-row">
+        <h3>Toggle to these Speeds:</h3>
+        <input id="speedValues" type="text" />
+      </div>
 
-    <button id="saveSettings">Save</button>
-    <button id="resetSettings">Reset</button>
+      <div class="buttons">
+        <button id="resetSettings">Reset</button>
+        <button class="apply" id="saveSettings">Apply</button>
+      </div>
+    </div>
 
     <script src="options.js"></script>
   </body>
