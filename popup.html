@@ -1,24 +1,38 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" type="text/css" href="popup.css" />
   </head>
   <body>
-    <button id="rewindVideo"><</button>
-    <button id="playpauseVideo">play/pause Video</button>
-    <button id="forwardVideo">></button>
-    <br/>
-    <button id="decreaseSpeed">-</button>
-    (Speed)
-    <button id="increaseSpeed">+</button>
-    <button id="resetSpeed">reset Speed</button>
-    <br/>
-    <button id="toggleLoop">LOOP</button>
-    <br/>
-    <button id="setLoopStart">[..</button>
-    <button id="removeLoop">lo/op</button>
-    <button id="setLoopEnd">..]</button>
+    <div class="controls">
+      <div class="leftcol">
+        <button id="rewindVideo"><</button>
+        <button id="playpauseVideo">play/pause</button>
+        <button id="forwardVideo">></button>
+      </div>
 
-    <button id="openOptions">Options</button>
+      <div class="row">
+        <div class="leftcol">
+          <button id="decreaseSpeed">-</button>
+          <p>(Speed)</p>
+          <button id="increaseSpeed">+</button>
+        </div>
+        <button id="resetSpeed">reset</button>
+      </div>
+
+      <div class="leftcol">
+        <button id="toggleLoop">LOOP</button>
+      </div>
+      <div class="leftcol">
+        <button id="setLoopStart">[..</button>
+        <button id="removeLoop">lo/op</button>
+        <button id="setLoopEnd">..]</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <button class="options" id="openOptions">Options</button>
+    </div>
 
     <script src="popup.js"></script>
   </body>
