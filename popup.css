@@ -4,6 +4,11 @@ body {
     margin: 5px;
 }
 
+img {
+    height: 25px;
+    width: 25px;
+}
+
 div.controls {
     margin: 10px;
 }
