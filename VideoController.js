@@ -36,6 +36,14 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
       removeLoop();
       break;
   }
+
+  var video = document.getElementsByTagName("video")[0];
+  var videoState = {
+    paused: video.paused,
+    playbackRate: video.playbackRate,
+    loopState: {start: startTime, stop: stopTime}
+  }
+  response(videoState);
 });
 
 function startStopVideo() {

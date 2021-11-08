@@ -9,23 +9,32 @@ registerOnClickCommand("setLoopStart", "set-loop-start");
 registerOnClickCommand("removeLoop", "remove-loop");
 registerOnClickCommand("setLoopEnd", "set-loop-end");
 
-function registerOnClickCommand(elementId, command) {
-  document
-    .getElementById(elementId)
-    .addEventListener("click", () => sendCommand(command));
-}
-
-function sendCommand(command) {
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    var activeTab = tabs[0].id
-    var message = { cmd: command };
-    chrome.tabs.sendMessage(activeTab, message);
-  });
-}
-
 document
   .getElementById("openOptions")
   .addEventListener("click", openOptionsPage);
+
+var speedDisplay = document.getElementById("speed");
+
+sendCommand("", updateUi);
+
+function registerOnClickCommand(elementId, command) {
+  document
+    .getElementById(elementId)
+    .addEventListener("click", () => sendCommand(command, updateUi));
+}
+
+function sendCommand(command, callback) {
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    var activeTab = tabs[0].id
+    var message = { cmd: command,  };
+    chrome.tabs.sendMessage(activeTab, message, callback);
+  });
+}
+
+function updateUi(videoState) {
+  speedDisplay.textContent = videoState.playbackRate;
+}
+
 
 function openOptionsPage() {
   if (chrome.runtime.openOptionsPage) {
