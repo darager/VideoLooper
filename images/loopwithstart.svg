@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="loopwithstart.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.74118967"
+     inkscape:cx="397.33419"
+     inkscape:cy="561.25984"
+     inkscape:window-width="1284"
+     inkscape:window-height="1040"
+     inkscape:window-x="1807"
+     inkscape:window-y="852"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path41616"
+       style="color:#000000;fill:#6b7878;fill-opacity:1;stroke-width:1;stroke-linejoin:bevel;-inkscape-stroke:none;paint-order:markers fill stroke"
+       d="m 66.675352,24.090412 a 2.6460995,2.6460995 0 0 0 -2.70475,3.45922 l 3.18534,9.7622 h -12.35894 c -18.28238,0 -33.20883,14.92489 -33.20883,33.20727 v 23.54482 c 0,18.282378 14.92645,33.207268 33.20883,33.207268 h 82.910188 c 18.28238,0 33.20727,-14.92489 33.20727,-33.207268 v -23.54482 c 0,-18.28238 -14.92489,-33.20727 -33.20727,-33.20727 h -13.01316 v 5.2e-4 c -3.62156,2.8e-4 -6.61459,2.99192 -6.61459,6.61355 0,3.62161 2.99303,6.61483 6.61459,6.6151 v 0.002 h 13.01316 c 11.18224,0 19.97862,8.79431 19.97862,19.97655 v 23.54477 c 0,11.182238 -8.79638,19.978618 -19.97862,19.978618 H 54.797002 c -11.18224,0 -19.97863,-8.79638 -19.97863,-19.978618 v -23.54482 c 0,-11.18224 8.79639,-19.97655 19.97863,-19.97655 h 12.35842 l -3.18482,9.76116 a 2.6460995,2.6460995 0 0 0 3.69745,3.1874 L 102.0644,46.292042 a 2.6460995,2.6460995 0 0 0 0,-4.73252 L 67.668052,24.362632 a 2.6460995,2.6460995 0 0 0 -0.9927,-0.27182 z"
+       inkscape:export-filename="C:\Users\florager\Google Drive\rect30680.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       id="path40739"
+       style="color:#000000;fill:#1c1c1c;fill-opacity:1;stroke-width:1.00502;stroke-linejoin:bevel;-inkscape-stroke:none;paint-order:markers fill stroke"
+       d="m 66.676882,24.090811 a 2.6727267,2.6460995 0 0 0 -2.73197,3.459221 l 3.2174,9.76219 h -12.4833 c -18.46636,0 -33.543,14.9249 -33.543,33.20728 v 23.54481 c 0,18.282388 15.07664,33.207278 33.543,33.207278 h 41.85737 a 6.6811448,6.6145835 0 0 0 0.014,5.2e-4 6.6811448,6.6145835 0 0 0 6.681138,-6.61459 6.6811448,6.6145835 0 0 0 -6.681138,-6.61458 h -41.87141 c -11.29477,0 -20.17966,-8.79639 -20.17966,-19.978628 v -23.54481 c 0,-11.18224 8.88489,-19.97656 20.17966,-19.97656 h 12.48277 l -3.21687,9.76116 a 2.6727267,2.6460995 0 0 0 3.73466,3.1874 L 102.422,46.292042 a 2.6727267,2.6460995 0 0 0 0,-4.73253 L 67.679532,24.362628 a 2.6727267,2.6460995 0 0 0 -1.00269,-0.271817 z" />
+  </g>
+</svg>
