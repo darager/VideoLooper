@@ -14,6 +14,7 @@ document
   .addEventListener("click", openOptionsPage);
 
 var speedDisplay = document.getElementById("speed");
+var playPauseButton = document.getElementById("playpauseVideo");
 
 sendCommand("", updateUi);
 
@@ -32,7 +33,8 @@ function sendCommand(command, callback) {
 }
 
 function updateUi(videoState) {
-  speedDisplay.textContent = videoState.playbackRate;
+  speedDisplay.textContent = videoState.playbackRate.toFixed(1);
+  playPauseButton.src = (videoState.paused) ? "./images/play.svg" : "./images/pause.svg";
 }
 
 
