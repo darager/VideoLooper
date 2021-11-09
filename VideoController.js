@@ -1,102 +1,102 @@
 chrome.runtime.onMessage.addListener((request, sender, response) => {
   var cmd = { id: request.cmd };
-
-  switch (cmd.id) {
-    case "play-pause":
-      startStopVideo();
-      break;
-    case "move-video-forward":
-      moveVideoForward();
-      break;
-    case "move-video-back":
-      moveVideoBack();
-      break;
-    case "toggle-speed":
-      toggleBetweenSpeeds();
-      break;
-    case "increase-speed":
-      increaseSpeed();
-      break;
-    case "decrease-speed":
-      decreaseSpeed();
-      break;
-    case "reset-speed":
-      resetSpeed();
-      break;
-    case "toggle-loop":
-      loopVideo();
-      break;
-    case "set-loop-start":
-      setLoopStart();
-      break;
-    case "set-loop-end":
-      setLoopEnd();
-      break;
-    case "remove-loop":
-      removeLoop();
-      break;
-  }
-
   var video = document.getElementsByTagName("video")[0];
-  var videoState = {
-    paused: video.paused,
-    playbackRate: video.playbackRate,
-    loopState: {start: startTime, stop: stopTime}
-  }
-  response(videoState);
+
+  getValues((data) => {
+    console.log(data);
+
+    var videoState = {
+      paused: video.paused,
+      currentTime: video.currentTime,
+      playbackRate: video.playbackRate,
+      loopState: {start: startTime, stop: stopTime}
+    }
+    console.log(videoState);
+
+    switch (cmd.id) {
+      case "play-pause":
+        videoState.paused = !videoState.paused;
+        break;
+      case "move-video-forward":
+        videoState.currentTime += data.moveVideoBy;
+        break;
+      case "move-video-back":
+        videoState.currentTime -= data.moveVideoBy;
+        break;
+      case "toggle-speed":
+        videoState.playbackRate = nextSpeedValue(videoState.playbackRate, data.speedValues);
+        break;
+      case "increase-speed":
+        videoState.playbackRate += data.changeSpeedBy;
+        break;
+      case "decrease-speed":
+        videoState.playbackRate -= data.changeSpeedBy;
+        break;
+      case "reset-speed":
+        videoState.playbackRate = (videoState.playbackRate != 1) ? 1 : data.preferedSpeed;
+        break;
+      case "toggle-loop":
+        loopVideo();
+        break;
+      case "set-loop-start":
+        setLoopStart();
+        break;
+      case "set-loop-end":
+        setLoopEnd();
+        break;
+      case "remove-loop":
+        removeLoop();
+        break;
+    }
+
+    ensureValidValues(videoState);
+    applyState(videoState, video);
+
+    response(videoState);
+  });
 });
 
-function startStopVideo() {
-  var video = document.getElementsByTagName("video")[0];
-  video.paused ? video.play() : video.pause();
+function ensureValidValues(state) {
+  //TODO: constrain other values
+  state.playbackRate = constrain(state.playbackRate, 0.1, 5);
 }
 
-function moveVideoForward() {
-  getValue("moveVideoBy", (s) => forwardVideo(s));
-}
-function moveVideoBack() {
-  getValue("moveVideoBy", (s) => forwardVideo(-s));
-}
-function forwardVideo(seconds) {
-  var video = document.getElementsByTagName("video")[0];
-  video.currentTime = video.currentTime + seconds;
+function applyState(state, video) {
+  (state.paused) ? video.pause() : video.play();
+  video.currentTime = state.currentTime;
+  video.playbackRate = state.playbackRate
 }
 
-function toggleBetweenSpeeds() {
-  getValue("speedValues", (speeds) => {
-    let curSpeed = getSpeed();
+function getValues(callback) {
+  let keys = ["moveVideoBy", "speedValues", "changeSpeedBy", "preferedSpeed"];
+  chrome.storage.local.get(keys, (result) => callback(result));
+}
 
-    // sort in descending order
-    speeds.sort((a, b) => b - a);
+function constrain(value, min, max) {
+  if (min != null && value < min) value = min;
+  if (max != null && value > max) value = max;
+  return value;
+}
 
-    let slowest = speeds[speeds.length - 1];
-    let fastest = speeds[0];
+function nextSpeedValue(curSpeed, speeds) {
+  // sort in descending order
+  speeds.sort((a, b) => b - a);
 
-    if (curSpeed <= slowest) {
-      setSpeed(fastest);
-    } else {
-      for (speed of speeds) {
-        if (curSpeed - speed > 0) {
-          setSpeed(speed);
-          break;
-        }
+  let slowest = speeds[speeds.length - 1];
+  let fastest = speeds[0];
+
+  if (curSpeed <= slowest) {
+    return fastest;
+  } else {
+    for (speed of speeds) {
+      if (curSpeed - speed > 0) {
+        return speed;
+        break;
       }
     }
-  });
+  }
 }
-function resetSpeed() {
-  getValue("preferedSpeed", (prefSpeed) => {
-    let curSpeed = getSpeed();
-    var newSpeed = curSpeed != 1 ? 1 : prefSpeed;
-    setSpeed(newSpeed);
-  });
-}
-function increaseSpeed() {
-  getValue("changeSpeedBy", (ds) => changeSpeed(ds));
-}
-function decreaseSpeed() {
-  getValue("changeSpeedBy", (ds) => changeSpeed(-ds));
-}
+
 function changeSpeed(delta) {
   var current = getSpeed();
   var speed = current + delta;

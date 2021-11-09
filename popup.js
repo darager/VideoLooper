@@ -33,6 +33,7 @@ function sendCommand(command, callback) {
 }
 
 function updateUi(videoState) {
+  console.log(videoState);
   speedDisplay.textContent = videoState.playbackRate.toFixed(1);
   playPauseButton.src = (videoState.paused) ? "./images/play.svg" : "./images/pause.svg";
 }
