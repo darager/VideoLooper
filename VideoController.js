@@ -9,15 +9,18 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
   };
 
   getValues((data) => {
+    var currentTimeChanged = false;
     switch (cmd.id) {
       case "play-pause":
         videoState.paused = !videoState.paused;
         break;
       case "move-video-forward":
         videoState.currentTime += data.moveVideoBy;
+        currentTimeChanged = true;
         break;
       case "move-video-back":
         videoState.currentTime -= data.moveVideoBy;
+        currentTimeChanged = true;
         break;
       case "toggle-speed":
         videoState.playbackRate = nextSpeedValue(
@@ -36,7 +39,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
           videoState.playbackRate != 1 ? 1 : data.preferedSpeed;
         break;
       case "toggle-loop":
-        loopVideo(videoState.loop, videoState.currentTime);
+        toggleLoop(videoState.loop, videoState.currentTime);
         break;
       case "set-loop-start":
         videoState.loop.startTime = videoState.currentTime;
@@ -52,7 +55,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     }
 
     ensureValidValues(videoState);
-    applyState(videoState, video);
+    applyState(videoState, video, currentTimeChanged);
 
     response(videoState);
   });
@@ -64,9 +67,9 @@ function ensureValidValues(state) {
   state.playbackRate = constrain(state.playbackRate, 0.1, 5);
 }
 
-function applyState(state, video) {
+function applyState(state, video, setCurrentTime) {
   state.paused ? video.pause() : video.play();
-  video.currentTime = state.currentTime;
+  if(setCurrentTime) video.currentTime = state.currentTime;
   video.playbackRate = state.playbackRate;
 
   startTime = state.loop.startTime;
@@ -103,7 +106,7 @@ function nextSpeedValue(curSpeed, speeds) {
   }
 }
 
-function loopVideo(loop, currentTime) {
+function toggleLoop(loop, currentTime) {
   if (loop.startTime != null && loop.stopTime != null) {
     loop.startTime = null;
     loop.stopTime = null;
