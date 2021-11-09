@@ -1,17 +1,14 @@
 chrome.runtime.onMessage.addListener((request, sender, response) => {
   var cmd = { id: request.cmd };
   var video = document.getElementsByTagName("video")[0];
+  var videoState = {
+    paused: video.paused,
+    currentTime: video.currentTime,
+    playbackRate: video.playbackRate,
+    loop: { startTime: startTime, stopTime: stopTime },
+  };
 
   getValues((data) => {
-    console.log(data);
-
-    var videoState = {
-      paused: video.paused,
-      currentTime: video.currentTime,
-      playbackRate: video.playbackRate
-    };
-    console.log(videoState);
-
     switch (cmd.id) {
       case "play-pause":
         videoState.paused = !videoState.paused;
@@ -39,16 +36,18 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
           videoState.playbackRate != 1 ? 1 : data.preferedSpeed;
         break;
       case "toggle-loop":
-        loopVideo();
+        loopVideo(videoState.loop, videoState.currentTime);
         break;
       case "set-loop-start":
-        setLoopStart();
+        videoState.loop.startTime = videoState.currentTime;
         break;
       case "set-loop-end":
-        setLoopEnd();
+        if (videoState.loop.startTime != null)
+          videoState.loop.stopTime = videoState.currentTime;
         break;
       case "remove-loop":
-        removeLoop();
+        videoState.loop.startTime = null;
+        videoState.loop.stopTime = null;
         break;
     }
 
@@ -69,6 +68,9 @@ function applyState(state, video) {
   state.paused ? video.pause() : video.play();
   video.currentTime = state.currentTime;
   video.playbackRate = state.playbackRate;
+
+  startTime = state.loop.startTime;
+  stopTime = state.loop.stopTime;
 }
 
 function getValues(callback) {
@@ -101,55 +103,35 @@ function nextSpeedValue(curSpeed, speeds) {
   }
 }
 
-function getCurrentTime() {
-  var video = document.getElementsByTagName("video")[0];
-  var time = video.currentTime;
-  return time;
-}
+function loopVideo(loop, currentTime) {
+  if (loop.startTime != null && loop.stopTime != null) {
+    loop.startTime = null;
+    loop.stopTime = null;
+  } else if (loop.startTime == null && loop.stopTime == null) {
+    loop.startTime = currentTime;
+  } else if (loop.startTime != null && loop.stopTime == null) {
+    loop.stopTime = currentTime;
 
-function setCurrentTime(time) {
-  var video = document.getElementsByTagName("video")[0];
-  video.currentTime = time;
+    if (loop.stopTime <= loop.startTime) {
+      loop.startTime = null;
+      loop.stopTime = null;
+    }
+  }
 }
 
 var startTime;
 var stopTime;
 
-function setLoopStart() {
-  startTime = getCurrentTime();
-}
-function setLoopEnd() {
-  if (startTime != null) stopTime = getCurrentTime();
-}
-function removeLoop() {
-  startTime = null;
-  stopTime = null;
-}
-async function loopVideo() {
-  var currentTime = getCurrentTime();
-
-  if (startTime != null && stopTime != null) {
-    startTime = null;
-    stopTime = null;
-  } else if (startTime == null && stopTime == null) {
-    startTime = currentTime;
-  } else if (startTime != null && stopTime == null) {
-    stopTime = currentTime;
-
-    if (stopTime <= startTime) {
-      startTime = null;
-      stopTime = null;
-    }
-  }
-}
-
 var checkLoop = setInterval(enforceLoop, 0.01);
+
 async function enforceLoop() {
-  var currentTime = getCurrentTime();
+  var video = document.getElementsByTagName("video")[0];
+  var currentTime = video.currentTime;
 
   if (startTime == null || stopTime == null) return;
 
   if (currentTime >= stopTime || currentTime < startTime) {
-    setCurrentTime(startTime);
+    var video = document.getElementsByTagName("video")[0];
+    video.currentTime = startTime;
   }
 }
