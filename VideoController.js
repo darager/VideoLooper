@@ -8,9 +8,8 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     var videoState = {
       paused: video.paused,
       currentTime: video.currentTime,
-      playbackRate: video.playbackRate,
-      loopState: {start: startTime, stop: stopTime}
-    }
+      playbackRate: video.playbackRate
+    };
     console.log(videoState);
 
     switch (cmd.id) {
@@ -24,7 +23,10 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         videoState.currentTime -= data.moveVideoBy;
         break;
       case "toggle-speed":
-        videoState.playbackRate = nextSpeedValue(videoState.playbackRate, data.speedValues);
+        videoState.playbackRate = nextSpeedValue(
+          videoState.playbackRate,
+          data.speedValues
+        );
         break;
       case "increase-speed":
         videoState.playbackRate += data.changeSpeedBy;
@@ -33,7 +35,8 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         videoState.playbackRate -= data.changeSpeedBy;
         break;
       case "reset-speed":
-        videoState.playbackRate = (videoState.playbackRate != 1) ? 1 : data.preferedSpeed;
+        videoState.playbackRate =
+          videoState.playbackRate != 1 ? 1 : data.preferedSpeed;
         break;
       case "toggle-loop":
         loopVideo();
@@ -54,6 +57,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
 
     response(videoState);
   });
+  return true; // keep port open for response from async code
 });
 
 function ensureValidValues(state) {
@@ -62,14 +66,16 @@ function ensureValidValues(state) {
 }
 
 function applyState(state, video) {
-  (state.paused) ? video.pause() : video.play();
+  state.paused ? video.pause() : video.play();
   video.currentTime = state.currentTime;
-  video.playbackRate = state.playbackRate
+  video.playbackRate = state.playbackRate;
 }
 
 function getValues(callback) {
   let keys = ["moveVideoBy", "speedValues", "changeSpeedBy", "preferedSpeed"];
-  chrome.storage.local.get(keys, (result) => callback(result));
+  chrome.storage.local.get(keys, (result) => {
+    callback(result);
+  });
 }
 
 function constrain(value, min, max) {
@@ -81,7 +87,6 @@ function constrain(value, min, max) {
 function nextSpeedValue(curSpeed, speeds) {
   // sort in descending order
   speeds.sort((a, b) => b - a);
-
   let slowest = speeds[speeds.length - 1];
   let fastest = speeds[0];
 
@@ -91,30 +96,9 @@ function nextSpeedValue(curSpeed, speeds) {
     for (speed of speeds) {
       if (curSpeed - speed > 0) {
         return speed;
-        break;
       }
     }
   }
-}
-
-function changeSpeed(delta) {
-  var current = getSpeed();
-  var speed = current + delta;
-  setSpeed(speed);
-}
-function getSpeed() {
-  var video = document.getElementsByTagName("video")[0];
-  return video.playbackRate;
-}
-function setSpeed(speed) {
-  var video = document.getElementsByTagName("video")[0];
-
-  let min = 0.1;
-  let max = 5;
-  if (speed > max) speed = max;
-  if (speed < min) speed = min;
-
-  video.playbackRate = speed;
 }
 
 function getCurrentTime() {
@@ -168,11 +152,4 @@ async function enforceLoop() {
   if (currentTime >= stopTime || currentTime < startTime) {
     setCurrentTime(startTime);
   }
-}
-
-function getValue(key, f) {
-  chrome.storage.local.get(key, (result) => {
-    var value = result[key];
-    f(value);
-  });
 }
