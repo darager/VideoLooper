@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="156.87131mm"
-   height="149.99998mm"
-   viewBox="0 0 156.87131 149.99998"
+   width="199.99997mm"
+   height="191.23952mm"
+   viewBox="0 0 199.99997 191.23951"
    version="1.1"
    id="svg5"
    inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
@@ -28,8 +28,8 @@
      inkscape:cy="503.24501"
      inkscape:window-width="1080"
      inkscape:window-height="1118"
-     inkscape:window-x="1920"
-     inkscape:window-y="740"
+     inkscape:window-x="220"
+     inkscape:window-y="641"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1" />
   <defs
@@ -38,22 +38,22 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-27.941747,-15.313714)">
+     transform="translate(-27.941759,-15.313726)">
     <rect
-       style="fill:#1c1c1c;stroke:#1c1c1c;stroke-width:23.4653;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#1c1c1c;stroke:#1c1c1c;stroke-width:29.9166;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect1922"
-       width="11.697682"
-       height="126.53468"
-       x="161.38272"
-       y="27.046364"
-       ry="9.3740947e-14" />
+       width="14.913731"
+       height="161.32292"
+       x="198.0697"
+       y="30.272026"
+       ry="1.1951318e-13" />
     <rect
-       style="fill:#1c1c1c;stroke:#1c1c1c;stroke-width:23.4653;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#1c1c1c;stroke:#1c1c1c;stroke-width:29.9166;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect1613"
-       width="11.697682"
-       height="126.53468"
-       x="39.674397"
-       y="27.046364"
-       ry="9.3740947e-14" />
+       width="14.913731"
+       height="161.32292"
+       x="42.900059"
+       y="30.272026"
+       ry="1.1951318e-13" />
   </g>
 </svg>

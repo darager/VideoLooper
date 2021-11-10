@@ -1,15 +1,43 @@
 body {
     font-size: 12;
-    width: 170px;
+    width: 150px;
     margin: 5px;
 }
 
 img {
+    margin: 5px;
+    height: 20px;
+    width: 20px;
+}
+img:hover {
+    filter: brightness(80%);
+}
+img#playpauseVideo {
+    margin-left: 10px;
+    margin-right: 10px;
     height: 25px;
     width: 25px;
 }
-img:hover {
-    filter: brightness(-80%);
+img#toggleLoop {
+    height: 40px;
+    width: 40px;
+}
+img#removeLoop {
+    height: 30px;
+    width: 30px;
+}
+img#setLoopEnd {
+    margin-top: 15px;
+}
+img#resetSpeed {
+    margin-top: 32px;
+    margin-right: 0px;
+    height: 15px;
+    width: 15px;
+}
+
+p#speed {
+    font-size: x-large;
 }
 
 div.controls {
@@ -24,7 +52,7 @@ div.row {
 
 div.leftcol {
     display: flex;
-    margin-left: 15px;
+    margin-left: 25px;
     width: 80px;
     align-items: center;
     flex-direction: row;
