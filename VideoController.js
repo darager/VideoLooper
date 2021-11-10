@@ -29,14 +29,14 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         );
         break;
       case "increase-speed":
-        videoState.playbackRate += data.changeSpeedBy;
+        videoState.playbackRate += Number(data.changeSpeedBy);
         break;
       case "decrease-speed":
-        videoState.playbackRate -= data.changeSpeedBy;
+        videoState.playbackRate -= Number(data.changeSpeedBy);
         break;
       case "reset-speed":
-        videoState.playbackRate =
-          videoState.playbackRate != 1 ? 1 : data.preferedSpeed;
+        let speed = videoState.playbackRate != 1 ? 1 : data.preferedSpeed;
+        videoState.playbackRate = speed;
         break;
       case "toggle-loop":
         toggleLoop(videoState.loop, videoState.currentTime);
@@ -69,7 +69,7 @@ function ensureValidValues(state) {
 
 function applyState(state, video, setCurrentTime) {
   state.paused ? video.pause() : video.play();
-  if(setCurrentTime) video.currentTime = state.currentTime;
+  if (setCurrentTime) video.currentTime = state.currentTime;
   video.playbackRate = state.playbackRate;
 
   startTime = state.loop.startTime;

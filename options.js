@@ -42,7 +42,7 @@ function ensureProperValues() {
 function constrain(value, min, max) {
   if (min != null && value < min) value = min;
   if (max != null && value > max) value = max;
-  return value;
+  return Number(value);
 }
 
 function constrainSpeedValues(values, min, max) {

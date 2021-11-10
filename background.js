@@ -1,10 +1,6 @@
 chrome.management.onInstalled.addListener(setDefaultValues);
 
-// TODO: only for testing!!
-setDefaultValues();
-
 function setDefaultValues() {
-  console.log("setting default values!");
   storeValue({"moveVideoBy": 5});
   storeValue({"speedValues": [0.2, 0.5, 1]});
   storeValue({"changeSpeedBy": 0.1});
