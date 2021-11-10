@@ -3,7 +3,14 @@
   "description": "Tool to make learning songs by ear easier.",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["scripting", "storage", "management", "activeTab", "tabs", "contextMenus"],
+  "permissions": [
+    "scripting",
+    "storage",
+    "management",
+    "activeTab",
+    "tabs",
+    "contextMenus"
+  ],
   "background": {
     "service_worker": "background.js"
   },
@@ -66,6 +73,11 @@
     {
       "matches": ["<all_urls>"],
       "js": ["videoController.js"]
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["videoControllerFeedback.js"],
+      "resources": ["/images/*.svg"]
     }
   ]
 }
