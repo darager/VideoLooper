@@ -129,6 +129,8 @@ var checkLoop = setInterval(enforceLoop, 0.01);
 
 async function enforceLoop() {
   var video = document.getElementsByTagName("video")[0];
+  if(video == null) return;
+
   var currentTime = video.currentTime;
 
   if (startTime == null || stopTime == null) return;

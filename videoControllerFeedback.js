@@ -1,6 +1,6 @@
 console.log("feedback script loaded");
 
-let func = async () => {
+let func = () => {
   const video = document.getElementsByTagName("video")[0];
   var vidHeight = video.offsetHeight;
   var vidWidth = video.offsetWidth;
@@ -17,7 +17,8 @@ let func = async () => {
   div.style.top = ypos + vidHeight / 2 - 50 + "px";
 
   var img = new Image();
-  img.src = await chrome.runtime.getURL("images/loop.svg");
+  img.id = "myImage";
+  // img.src = chrome.runtime.getURL("images/loop.svg");
   img.width = "140";
   img.height = "140";
 
@@ -25,12 +26,13 @@ let func = async () => {
   document.body.appendChild(div);
 };
 
-chrome.runtime.onMessage.addListener(async (request, sender, response) => {
+chrome.runtime.onMessage.addListener((request, sender, response) => {
   func();
+  var url = chrome.runtime.getURL("images/loop.svg");
+  document.getElementById("myImage").src = url;
+
   var cmd = { id: request.cmd };
   var video = document.getElementsByTagName("video")[0];
-
-  console.log(cmd);
 
   switch (cmd.id) {
     case "play-pause":
