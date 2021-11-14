@@ -1,20 +1,6 @@
 console.log("feedback script loaded");
 
 let func = async () => {
-  //   let url = await chrome.runtime.getURL("images/loop.svg");
-  //   console.log(url);
-
-  //   var img = document.createElement("img");
-  //   img.src = url;
-  //   img.setAttribute("width", "40px");
-  //   img.setAttribute("height", "40px");
-
-  //   document.getElementById("container").appendChild(img);
-
-  //   let url = await chrome.runtime.getURL("images/loop.svg");
-  //   console.log(url);
-  //   var img = document.getElementById("img");
-  //   img.setAttribute("src", url);
   const video = document.getElementsByTagName("video")[0];
   var vidHeight = video.offsetHeight;
   var vidWidth = video.offsetWidth;
@@ -22,17 +8,23 @@ let func = async () => {
   var xpos = rect.left;
   var ypos = rect.top;
 
-  var img11 = new Image();
-  img11.onload = () => {
-    document.body.appendChild(img11);
-    img11.width = "140";
-    img11.height = "140";
-    img11.style.opacity = "0";
-    img11.style.position = "absolute";
-    img11.style.left = xpos + vidWidth / 2 - 50 + "px";
-    img11.style.top = ypos + vidHeight / 2 - 50 + "px";
-  };
-  img11.src = await chrome.runtime.getURL("images/loop.svg");
+  var div = document.createElement("div");
+  div.className = "addedDiv"
+  div.width = "140";
+  div.height = "140";
+  div.style.backgroundColor = "red";
+  div.style.opacity = "50";
+  div.style.position = "absolute";
+  div.style.left = xpos + vidWidth / 2 - 50 + "px";
+  div.style.top = ypos + vidHeight / 2 - 50 + "px";
+
+  var text = document.createElement("p");
+  text.innerHTML = "FEEDBACK POPUP TEST!";
+  text.style.fontSize = "40";
+  div.appendChild(text);
+
+  document.body.appendChild(div);
+  console.log("adding div to DOM");
 };
 
 chrome.runtime.onMessage.addListener(async (request, sender, response) => {
