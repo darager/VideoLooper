@@ -9,22 +9,20 @@ let func = async () => {
   var ypos = rect.top;
 
   var div = document.createElement("div");
-  div.className = "addedDiv"
   div.width = "140";
   div.height = "140";
   div.style.backgroundColor = "red";
-  div.style.opacity = "50";
   div.style.position = "absolute";
   div.style.left = xpos + vidWidth / 2 - 50 + "px";
   div.style.top = ypos + vidHeight / 2 - 50 + "px";
 
-  var text = document.createElement("p");
-  text.innerHTML = "FEEDBACK POPUP TEST!";
-  text.style.fontSize = "40";
-  div.appendChild(text);
+  var img = new Image();
+  img.src = await chrome.runtime.getURL("images/loop.svg");
+  img.width = "140";
+  img.height = "140";
 
+  div.appendChild(img);
   document.body.appendChild(div);
-  console.log("adding div to DOM");
 };
 
 chrome.runtime.onMessage.addListener(async (request, sender, response) => {
