@@ -67,8 +67,13 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["videoController.js", "videoControllerFeedback.js"],
-      "web_accessible_resources": ["images/*.svg"]
+      "js": ["videoController.js", "videoControllerFeedback.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["*.png", "*.svg"],
+      "matches": ["<all_urls>"]
     }
   ]
 }

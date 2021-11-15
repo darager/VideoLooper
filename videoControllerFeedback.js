@@ -18,7 +18,7 @@ let func = () => {
 
   var img = new Image();
   img.id = "myImage";
-  // img.src = chrome.runtime.getURL("images/loop.svg");
+  img.src = chrome.runtime.getURL("images/loop.svg");
   img.width = "140";
   img.height = "140";
 
@@ -28,8 +28,6 @@ let func = () => {
 
 chrome.runtime.onMessage.addListener((request, sender, response) => {
   func();
-  var url = chrome.runtime.getURL("images/loop.svg");
-  document.getElementById("myImage").src = url;
 
   var cmd = { id: request.cmd };
   var video = document.getElementsByTagName("video")[0];
