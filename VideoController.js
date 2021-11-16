@@ -74,7 +74,8 @@ function getCurrentVideoState() {
 
 function ensureValidValues(state) {
   //TODO: constrain other values
-  state.playbackRate = constrain(state.playbackRate, 0.1, 5);
+  var constrainedRate = constrain(state.playbackRate, 0.1, 5);
+  state.playbackRate = constrainedRate.toFixed(1);
 }
 
 function applyState(state, video, setCurrentTime) {
