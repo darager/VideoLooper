@@ -6,7 +6,11 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
 
     switch (cmd.id) {
       case "play-pause":
-        popup = imagePopup(videoState.paused ? "images/pause.svg" : "images/play.svg", 60, 60);
+        popup = imagePopup(
+          videoState.paused ? "images/pause.svg" : "images/play.svg",
+          60,
+          60
+        );
         break;
       case "move-video-forward":
         popup = imagePopup("images/right-arrow.svg", 60, 60);
@@ -18,7 +22,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
       case "increase-speed":
       case "decrease-speed":
       case "reset-speed":
-        popup = textPopup(videoState.playbackRate);
+        popup = textPopup(Number(videoState.playbackRate).toFixed(1));
         break;
       case "toggle-loop":
       case "set-loop-start":
@@ -34,6 +38,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     if (popup == null) return;
 
     document.body.appendChild(popup);
+
     setTimeout(() => {
       document.body.removeChild(popup);
     }, 300);
@@ -58,13 +63,12 @@ const popupWidth = iconWidth + 40;
 function textPopup(text) {
   var container = popupContainer();
 
-  var p = document.createElement("h1");
-  p.textContent = text;
-  p.width = iconWidth;
-  p.height= iconHeight;
-  p.style.fontSize = 20;
+  var h1 = document.createElement("h1");
+  h1.textContent = text;
+  h1.style.fontSize = "60px";
+  h1.style.fontFamily = "verdana";
 
-  container.appendChild(p);
+  container.appendChild(h1);
   return container;
 }
 
@@ -75,9 +79,6 @@ function imagePopup(imagePath, width = 100, height = 100) {
   img.src = chrome.runtime.getURL(imagePath);
   img.width = width;
   img.height = height;
-  img.style.justifyContent = "center";
-
-  setPopupChildMargin(img, width, height);
 
   container.appendChild(img);
   return container;
@@ -89,25 +90,18 @@ function popupContainer() {
   var div = document.createElement("div");
   div.width = popupWidth;
   div.height = popupHeight;
+  div.style.minWidth = popupWidth + "px";
+  div.style.minHeight = popupHeight + "px";
   div.style.padding = "20px";
   div.style.borderRadius = "50px";
   div.style.backgroundColor = "#828282";
   div.style.opacity = "0.8";
+  div.style.display = "flex";
+  div.style.alignItems = "center";
+  div.style.justifyContent = "center";
   centerInHost(div, video);
 
   return div;
-}
-
-function setPopupChildMargin(child, width, height) {
-  if(width != iconWidth || height != iconHeight) {
-    var verticalMargin = (iconHeight - height) / 2 + "px";
-    child.style.marginTop = verticalMargin;
-    child.style.marginBottom = verticalMargin;
-
-    var horizontalMargin = (iconWidth - width) / 2 + "px";
-    child.style.marginLeft = horizontalMargin;
-    child.style.marginRight = horizontalMargin;
-  }
 }
 
 function centerInHost(element, host) {
