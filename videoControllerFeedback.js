@@ -1,32 +1,18 @@
 chrome.runtime.onMessage.addListener((request, sender, response) => {
   var cmd = { id: request.cmd };
 
-  var video = document.getElementsByTagName("video")[0];
-  var vidHeight = video.offsetHeight;
-  var vidWidth = video.offsetWidth;
-  var rect = video.getBoundingClientRect();
-  var xpos = rect.left;
-  var ypos = rect.top;
-
-  var div = document.createElement("div");
-  div.width = "140";
-  div.height = "140";
-  div.style.backgroundColor = "red";
-  div.style.position = "absolute";
-  div.style.left = xpos + vidWidth / 2 - 50 + "px";
-  div.style.top = ypos + vidHeight / 2 - 50 + "px";
-
   withVideoState((videoState) => {
-    var imgFile = null;
+    var popup = null;
+
     switch (cmd.id) {
       case "play-pause":
-        imgFile = videoState.paused ? "images/pause.svg" : "images/play.svg";
+        popup = getPopup(videoState.paused ? "images/pause.svg" : "images/play.svg");
         break;
       case "move-video-forward":
-        imgFile = "images/right-arrow.svg";
+        popup = getPopup("images/right-arrow.svg");
         break;
       case "move-video-back":
-        imgFile = "images/left-arrow.svg";
+        popup = getPopup("images/left-arrow.svg");
         break;
       case "toggle-speed":
         console.log("Show current speed");
@@ -50,24 +36,48 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         console.log("Show loop state icon");
         break;
       case "remove-loop":
-        imgFile = "images/breakloop.svg";
+        popup = getPopup("images/breakloop.svg");
         break;
     }
-    if (imgFile == null) return;
 
-    var img = new Image();
-    img.src = chrome.runtime.getURL(imgFile);
-    img.width = "140";
-    img.height = "140";
+    if (popup == null) return;
 
-    div.appendChild(img);
-    document.body.appendChild(div);
-
+    document.body.appendChild(popup);
     setTimeout(() => {
-      document.body.removeChild(div);
+      document.body.removeChild(popup);
     }, 300);
   });
 });
+
+function getPopup(imagePath) {
+  var video = document.getElementsByTagName("video")[0];
+
+  var div = document.createElement("div");
+  div.width = "140";
+  div.height = "140";
+  div.style.backgroundColor = "red";
+  centerInHost(div, video);
+
+  var img = new Image();
+  img.src = chrome.runtime.getURL(imagePath);
+  img.width = "140";
+  img.height = "140";
+  div.appendChild(img);
+
+  return div;
+}
+
+function centerInHost(element, host) {
+  var vidHeight = host.offsetHeight;
+  var vidWidth = host.offsetWidth;
+  var rect = host.getBoundingClientRect();
+  var xpos = rect.left;
+  var ypos = rect.top;
+
+  element.style.position = "absolute";
+  element.style.left = xpos + vidWidth / 2 - (element.width / 2) + "px";
+  element.style.top = ypos + vidHeight / 2 - (element.height / 2) + "px";
+}
 
 function withVideoState(f) {
   // ugly workaround :)
