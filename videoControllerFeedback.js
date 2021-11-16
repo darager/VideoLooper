@@ -31,7 +31,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         popup = imagePopup(img);
         break;
       case "remove-loop":
-        popup = imagePopup("images/breakloop.svg");
+        popup = imagePopup("images/breakloop_black.svg");
         break;
     }
 
@@ -47,7 +47,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
 
 function getLoopStateImage(loop) {
   if (loop.startTime == null && loop.stopTime == null) {
-    return "images/breakloop.svg";
+    return "images/breakloop_black.svg";
   } else if (loop.startTime != null && loop.stopTime == null) {
     return "images/loopwithstart.svg";
   } else if (loop.startTime != null && loop.stopTime != null) {
