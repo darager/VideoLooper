@@ -62,6 +62,16 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
   return true; // keep port open for response from async code
 });
 
+function getCurrentVideoState() {
+  var video = document.getElementsByTagName("video")[0];
+  return {
+    paused: video.paused,
+    currentTime: video.currentTime,
+    playbackRate: video.playbackRate,
+    loop: { startTime: startTime, stopTime: stopTime },
+  };
+}
+
 function ensureValidValues(state) {
   //TODO: constrain other values
   state.playbackRate = constrain(state.playbackRate, 0.1, 5);
@@ -104,6 +114,16 @@ function nextSpeedValue(curSpeed, speeds) {
       }
     }
   }
+}
+
+function currentVideoState() {
+  var video = document.getElementsByTagName("video")[0];
+  return {
+    paused: video.paused,
+    currentTime: video.currentTime,
+    playbackRate: video.playbackRate,
+    loop: { startTime: startTime, stopTime: stopTime },
+  };
 }
 
 function toggleLoop(loop, currentTime) {
