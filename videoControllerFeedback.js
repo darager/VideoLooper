@@ -2,7 +2,6 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
   var cmd = { id: request.cmd };
 
   withVideoState((videoState) => {
-    console.log(videoState);
     var popup = null;
 
     switch (cmd.id) {
@@ -16,25 +15,16 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         popup = imagePopup("images/left-arrow.svg");
         break;
       case "toggle-speed":
-        popup = textPopup(videoState.playbackRate)
-        break;
       case "increase-speed":
-        popup = textPopup(videoState.playbackRate)
-        break;
       case "decrease-speed":
-        popup = textPopup(videoState.playbackRate)
-        break;
       case "reset-speed":
-        popup = textPopup(videoState.playbackRate)
+        popup = textPopup(videoState.playbackRate);
         break;
       case "toggle-loop":
-        console.log("Show loop state icon");
-        break;
       case "set-loop-start":
-        console.log("Show loop state icon");
-        break;
       case "set-loop-end":
-        console.log("Show loop state icon");
+        let img = getLoopStateImage(videoState.loop);
+        popup = imagePopup(img);
         break;
       case "remove-loop":
         popup = imagePopup("images/breakloop.svg");
@@ -49,6 +39,16 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     }, 300);
   });
 });
+
+function getLoopStateImage(loop) {
+  if (loop.startTime == null && loop.stopTime == null) {
+    return "images/breakloop.svg";
+  } else if (loop.startTime != null && loop.stopTime == null) {
+    return "images/loopwithstart.svg";
+  } else if (loop.startTime != null && loop.stopTime != null) {
+    return "images/loop.svg";
+  }
+}
 
 function textPopup(text) {
   var container = popupContainer();
@@ -79,7 +79,7 @@ function popupContainer() {
   var div = document.createElement("div");
   div.width = "140";
   div.height = "140";
-  div.style.backgroundColor = "red";
+  div.style.backgroundColor = "darkgray";
   centerInHost(div, video);
 
   return div;
@@ -93,8 +93,8 @@ function centerInHost(element, host) {
   var ypos = rect.top;
 
   element.style.position = "absolute";
-  element.style.left = xpos + vidWidth / 2 - (element.width / 2) + "px";
-  element.style.top = ypos + vidHeight / 2 - (element.height / 2) + "px";
+  element.style.left = xpos + vidWidth / 2 - element.width / 2 + "px";
+  element.style.top = ypos + vidHeight / 2 - element.height / 2 + "px";
 }
 
 function withVideoState(f) {
