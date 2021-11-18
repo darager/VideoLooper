@@ -1,4 +1,4 @@
-chrome.management.onInstalled.addListener(setDefaultValues);
+chrome.runtime.onInstalled.addListener(setDefaultValues);
 
 function setDefaultValues() {
   storeValue({"moveVideoBy": 5});
