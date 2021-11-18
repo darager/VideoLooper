@@ -7,16 +7,16 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     switch (cmd.id) {
       case "play-pause":
         popup = imagePopup(
-          videoState.paused ? "images/pause.svg" : "images/play.svg",
+          videoState.paused ? "../images/pause.svg" : "../images/play.svg",
           60,
           60
         );
         break;
       case "move-video-forward":
-        popup = imagePopup("images/right-arrow.svg", 60, 60);
+        popup = imagePopup("../images/right-arrow.svg", 60, 60);
         break;
       case "move-video-back":
-        popup = imagePopup("images/left-arrow.svg", 60, 60);
+        popup = imagePopup("../images/left-arrow.svg", 60, 60);
         break;
       case "toggle-speed":
       case "increase-speed":
@@ -31,7 +31,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         popup = imagePopup(img);
         break;
       case "remove-loop":
-        popup = imagePopup("images/breakloop_black.svg");
+        popup = imagePopup("../images/breakloop_black.svg");
         break;
     }
 
@@ -47,11 +47,11 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
 
 function getLoopStateImage(loop) {
   if (loop.startTime == null && loop.stopTime == null) {
-    return "images/breakloop_black.svg";
+    return "../images/breakloop_black.svg";
   } else if (loop.startTime != null && loop.stopTime == null) {
-    return "images/loopwithstart.svg";
+    return "../images/loopwithstart.svg";
   } else if (loop.startTime != null && loop.stopTime != null) {
-    return "images/loop.svg";
+    return "../images/loop.svg";
   }
 }
 

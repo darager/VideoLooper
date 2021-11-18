@@ -12,11 +12,11 @@
     "contextMenus"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "/src/background.js"
   },
-  "options_page": "options.html",
+  "options_page": "/src/options.html",
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "/src/popup.html",
     "default_icon": "/images/logo.png"
   },
   "icons": {
@@ -67,7 +67,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["videoController.js", "videoControllerFeedback.js"]
+      "js": ["/src/videoController.js", "/src/videoControllerFeedback.js"]
     }
   ],
   "web_accessible_resources": [
