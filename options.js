@@ -28,6 +28,17 @@ function saveSettings() {
   storeValue({ moveVideoBy: moveVideoBySelector.value });
   storeValue({ changeSpeedBy: changeSpeedBySelector.value });
   storeValue({ preferedSpeed: preferedSpeedSelector.value });
+  showFeedback();
+}
+
+function showFeedback() {
+  var p = document.createElement("h3");
+  p.textContent = "Saved";
+
+  var div = document.getElementById("buttons");
+  div.appendChild(p);
+
+  setTimeout(() => div.removeChild(p), 500);
 }
 
 function ensureProperValues() {
