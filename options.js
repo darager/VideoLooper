@@ -16,18 +16,20 @@ preferedSpeedSelector.addEventListener("blur", ensureProperValues);
 loadValues();
 
 function loadValues() {
-  getValue("speedValues", (v) => (speedValuesInput.value = v));
-  getValue("moveVideoBy", (v) => (moveVideoBySelector.value = v));
-  getValue("changeSpeedBy", (v) => (changeSpeedBySelector.value = v));
-  getValue("preferedSpeed", (v) => (preferedSpeedSelector.value = v));
+  getValues((values) => {
+    speedValuesInput.value = values.speedValues;
+    moveVideoBySelector.value = values.moveVideoBy;
+    changeSpeedBySelector.value = values.changeSpeedBy;
+    preferedSpeedSelector.value = values.preferedSpeed;
+  });
 }
 
 function saveSettings() {
   ensureProperValues();
   storeValue({ speedValues: parseSpeedValues(speedValuesInput.value) });
-  storeValue({ moveVideoBy: moveVideoBySelector.value });
-  storeValue({ changeSpeedBy: changeSpeedBySelector.value });
-  storeValue({ preferedSpeed: preferedSpeedSelector.value });
+  storeValue({ moveVideoBy: Number(moveVideoBySelector.value) });
+  storeValue({ changeSpeedBy: Number(changeSpeedBySelector.value) });
+  storeValue({ preferedSpeed: Number(preferedSpeedSelector.value) });
   showFeedback();
 }
 
@@ -45,9 +47,21 @@ function ensureProperValues() {
   const min = 0.1;
   const max = 5;
   moveVideoBySelector.value = constrain(moveVideoBySelector.value, min, null);
-  changeSpeedBySelector.value = constrain(changeSpeedBySelector.value, min, null);
-  preferedSpeedSelector.value = constrain(preferedSpeedSelector.value, min, max);
-  speedValuesInput.value = constrainSpeedValues(speedValuesInput.value, min, max);
+  changeSpeedBySelector.value = constrain(
+    changeSpeedBySelector.value,
+    min,
+    null
+  );
+  preferedSpeedSelector.value = constrain(
+    preferedSpeedSelector.value,
+    min,
+    max
+  );
+  speedValuesInput.value = constrainSpeedValues(
+    speedValuesInput.value,
+    min,
+    max
+  );
 }
 
 function constrain(value, min, max) {
@@ -77,9 +91,10 @@ function parseSpeedValues(string) {
 function storeValue(kvPair) {
   chrome.storage.local.set(kvPair);
 }
-function getValue(key, f) {
-  chrome.storage.local.get(key, (result) => {
-    var value = result[key];
-    f(value);
+
+function getValues(callback) {
+  let keys = ["moveVideoBy", "speedValues", "changeSpeedBy", "preferedSpeed"];
+  chrome.storage.local.get(keys, (result) => {
+    callback(result);
   });
 }
