@@ -5,7 +5,9 @@ function setDefaultValues() {
   storeValue({"speedValues": [0.2, 0.5, 1]});
   storeValue({"changeSpeedBy": 0.1});
   storeValue({"preferedSpeed": 2.0});
+  storeValue({"forceLastPlaybackRate": false});
 }
+
 
 function storeValue(kvPair) {
   chrome.storage.local.set(kvPair);
@@ -18,3 +20,18 @@ chrome.commands.onCommand.addListener((command) => {
   });
 });
 
+
+// store extension id for sending messages from content-scripts
+storeValue({"extensionId": chrome.runtime.id})
+
+// required for storing last playbackrate (rememberPlaybackSpeed.js)
+chrome.runtime.onMessage.addListener((request, sender, response) => {
+  var cmd = { id: request.cmd, value: request.value };
+  if(cmd.id == "storeValue") {
+    var kvPair = {};
+    kvPair[cmd.value.key] = cmd.value.value;
+
+    console.log("store", kvPair);
+    storeValue(kvPair);
+  }
+});

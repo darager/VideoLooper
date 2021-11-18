@@ -1,15 +1,41 @@
-document.onload(() => {
-  chrome.storage.local.get("lastPlaybackRate", (s) => {
-    var video = document.getElementsByTagName("video")[0];
-    if (video == null) return;
+// if url changes set lastPlaybackRate
+window.addEventListener("locationchange", setLastPlaybackRate);
 
-    video.playbackRate = s;
-  });
-});
+setInterval(storeLastPlaybackRate, 500);
 
-setInterval(() => {
+function setLastPlaybackRate() {
   var video = document.getElementsByTagName("video")[0];
   if (video == null) return;
 
-  chrome.storage.local.set({ lastPlaybackRate: video.playbackRate });
-}, 100);
+  getPlaybackValues((values) => {
+    if (values.forceLastPlaybackRate == false) return;
+    if (values.lastPlaybackRate == null) return;
+
+    console.log("setting default playback rate");
+    video.playbackRate = values.lastPlaybackRate;
+  });
+}
+
+function storeLastPlaybackRate() {
+  var video = document.getElementsByTagName("video")[0];
+  if (video == null) return;
+
+  var curRate = video.playbackRate;
+  if(curRate == null) return;
+
+  getPlaybackValues((values) => {
+    if (values.lastPlaybackRate == curRate) return;
+
+    var message = {
+      cmd: "storeValue",
+      value: { key: "lastPlaybackRate", value: curRate },
+    };
+    chrome.runtime.sendMessage(values.extensionId, message);
+  });
+}
+
+// TODO: only 1 getValue function for all content-scripts
+function getPlaybackValues(callback) {
+  let keys = ["lastPlaybackRate", "forceLastPlaybackRate", "extensionId"];
+  chrome.storage.local.get(keys, (v) => callback(v));
+}

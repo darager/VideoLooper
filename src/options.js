@@ -7,11 +7,13 @@ var speedValuesInput = document.getElementById("speedValues");
 var moveVideoBySelector = document.getElementById("moveVideoBy");
 var changeSpeedBySelector = document.getElementById("changeSpeedBy");
 var preferedSpeedSelector = document.getElementById("preferedSpeed");
+var forcePlaybackRateBox = document.getElementById("forceLastPlaybackRate");
 
 speedValuesInput.addEventListener("blur", ensureProperValues);
 moveVideoBySelector.addEventListener("blur", ensureProperValues);
 changeSpeedBySelector.addEventListener("blur", ensureProperValues);
 preferedSpeedSelector.addEventListener("blur", ensureProperValues);
+forcePlaybackRateBox.addEventListener("blur", ensureProperValues);
 
 loadValues();
 
@@ -21,6 +23,7 @@ function loadValues() {
     moveVideoBySelector.value = values.moveVideoBy;
     changeSpeedBySelector.value = values.changeSpeedBy;
     preferedSpeedSelector.value = values.preferedSpeed;
+    forcePlaybackRateBox.checked = values.forceLastPlaybackRate;
   });
 }
 
@@ -30,6 +33,7 @@ function saveSettings() {
   storeValue({ moveVideoBy: Number(moveVideoBySelector.value) });
   storeValue({ changeSpeedBy: Number(changeSpeedBySelector.value) });
   storeValue({ preferedSpeed: Number(preferedSpeedSelector.value) });
+  storeValue({ forceLastPlaybackRate: forcePlaybackRateBox.checked});
   showFeedback();
 }
 
@@ -93,7 +97,7 @@ function storeValue(kvPair) {
 }
 
 function getValues(callback) {
-  let keys = ["moveVideoBy", "speedValues", "changeSpeedBy", "preferedSpeed"];
+  let keys = ["moveVideoBy", "speedValues", "changeSpeedBy", "preferedSpeed", "forceLastPlaybackRate"];
   chrome.storage.local.get(keys, (result) => {
     callback(result);
   });

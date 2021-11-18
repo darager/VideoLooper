@@ -42,11 +42,22 @@ div.options-row {
   flex-direction: row;
 }
 
+div.options-row.checkbox-row {
+  margin-right: 95px;
+  justify-content: right;
+}
+
 input {
   width: 100px;
   height: 20px;
   justify-content: center;
   text-align: center;
+}
+
+input#forceLastPlaybackRate {
+  margin-left: 15px;
+  width: 15px;
+  height: 15px;
 }
 
 div.buttons {
