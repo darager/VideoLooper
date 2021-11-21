@@ -67,7 +67,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["/src/videoController.js", "/src/videoControllerFeedback.js", "/src/videoLib.js"]
+      "js": ["/src/videoLib.js", "/src/videoController.js", "/src/videoControllerFeedback.js"]
     }
   ],
   "web_accessible_resources": [

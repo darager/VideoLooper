@@ -1,9 +1,8 @@
-chrome.runtime.onMessage.addListener((request, sender, response) => {
+chrome.runtime.onMessage.addListener((request, sender, response) => {;
   var cmd = { id: request.cmd };
-  var video = getVideo();
-  if(video == null) return;
+  if(!video.videoExists()) return;
 
-  var videoState = getVideoState();
+  var videoState = video.getVideoState();
 
   getValues((data) => {
     var currentTimeChanged = false;
@@ -52,7 +51,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     }
 
     ensureValidValues(videoState);
-    setVideoState(videoState, video, currentTimeChanged);
+    video.setVideoState(videoState, currentTimeChanged);
 
     response(videoState); // respond with current videostate for ui updates
   });
@@ -114,15 +113,16 @@ function toggleLoop(loop, currentTime) {
 var checkLoop = setInterval(enforceLoop, 0.01);
 
 async function enforceLoop() {
-  var video = getVideo();
-  if(video == null) return;
+  if(!video.videoExists()) return;
 
-  var currentTime = video.currentTime;
+  var state = video.getVideoState();
+  var currentTime = state.currentTime;
   var loop = getLoopState();
 
   if (loop.startTime == null || loop.stopTime == null) return;
 
   if (currentTime >= loop.stopTime || currentTime < loop.startTime) {
-    video.currentTime = loop.startTime;
+    state.currentTime = loop.startTime;
+    video.setVideoState(state, true);
   }
 }

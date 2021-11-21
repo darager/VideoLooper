@@ -37,8 +37,8 @@ function updateUi(videoState) {
   speedDisplay.textContent = videoState.playbackRate;
   playPauseButton.src = (videoState.paused) ? "../images/play.svg" : "../images/pause.svg";
 
-  var image = "../images/inactiveloop.svg";
   let loop = videoState.loop;
+  var image = "../images/inactiveloop.svg";
   if(loop.startTime != null && loop.stopTime == null) image = "../images/loopwithstart.svg";
   if(loop.startTime != null && loop.stopTime != null) image = "../images/loop.svg";
   toggleLoopButton.src = image;

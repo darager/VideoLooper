@@ -85,8 +85,6 @@ function imagePopup(imagePath, width = 100, height = 100) {
 }
 
 function popupContainer() {
-  var video = getVideo();
-
   var div = document.createElement("div");
   div.width = popupWidth;
   div.height = popupHeight;
@@ -99,9 +97,14 @@ function popupContainer() {
   div.style.display = "flex";
   div.style.alignItems = "center";
   div.style.justifyContent = "center";
-  centerInHost(div, video);
+  centerOnVideo(div);
 
   return div;
+}
+
+function centerOnVideo(element) {
+  var vid = video.getVideoDomElement();
+  centerInHost(element, vid);
 }
 
 function centerInHost(element, host) {
@@ -119,6 +122,6 @@ function centerInHost(element, host) {
 function withVideoState(f) {
   // ugly workaround :)
   setTimeout(() => {
-    f(getVideoState());
+    f(video.getVideoState());
   }, 80);
 }

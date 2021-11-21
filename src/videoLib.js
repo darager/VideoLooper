@@ -1,29 +1,41 @@
-function getVideo() {
-  return document.getElementsByTagName("video")[0];
+class Video {
+  getVideo() {
+    return this.getVideoDomElement();
+  }
+
+  videoExists() {
+    var vid = this.getVideo();
+    return !(vid == null);
+  }
+
+  getVideoDomElement() {
+    return document.getElementsByTagName("video")[0];
+  }
+
+  getVideoState() {
+    var domVid = this.getVideoDomElement();
+    return {
+      paused: domVid.paused,
+      currentTime: domVid.currentTime,
+      playbackRate: domVid.playbackRate,
+      loop: videoLoop,
+    };
+  }
+
+  setVideoState(state, setCurrentTime = false) {
+    var domVid = this.getVideoDomElement();
+
+    state.paused ? domVid.pause() : domVid.play();
+    if (setCurrentTime) domVid.currentTime = state.currentTime;
+    domVid.playbackRate = state.playbackRate;
+    videoLoop = state.loop;
+  }
 }
 
-function getVideoState() {
-  var video = getVideo();
-  return {
-    paused: video.paused,
-    currentTime: video.currentTime,
-    playbackRate: video.playbackRate,
-    loop: { startTime: startTime, stopTime: stopTime },
-  };
-}
+var video = new Video();
 
-function setVideoState(state, video, setCurrentTime) {
-  state.paused ? video.pause() : video.play();
-  if (setCurrentTime) video.currentTime = state.currentTime;
-  video.playbackRate = state.playbackRate;
-
-  startTime = state.loop.startTime;
-  stopTime = state.loop.stopTime;
-}
-
-var startTime;
-var stopTime;
+var videoLoop = { startTime: null, stopTime: null };
 
 function getLoopState() {
-  return { startTime: startTime, stopTime: stopTime };
+  return videoLoop;
 }
