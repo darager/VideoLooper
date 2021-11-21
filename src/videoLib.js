@@ -1,18 +1,14 @@
 class Video {
-  getVideo() {
-    return this.getVideoDomElement();
-  }
-
-  videoExists() {
-    var vid = this.getVideo();
-    return !(vid == null);
-  }
-
   getVideoDomElement() {
     return document.getElementsByTagName("video")[0];
   }
 
-  getVideoState() {
+  exists() {
+    var vid = this.getVideoDomElement();
+    return !(vid == null);
+  }
+
+  getState() {
     var domVid = this.getVideoDomElement();
     return {
       paused: domVid.paused,
@@ -22,7 +18,7 @@ class Video {
     };
   }
 
-  setVideoState(state, setCurrentTime = false) {
+  setState(state, setCurrentTime = false) {
     var domVid = this.getVideoDomElement();
 
     state.paused ? domVid.pause() : domVid.play();

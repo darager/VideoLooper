@@ -122,6 +122,6 @@ function centerInHost(element, host) {
 function withVideoState(f) {
   // ugly workaround :)
   setTimeout(() => {
-    f(video.getVideoState());
+    f(video.getState());
   }, 80);
 }
