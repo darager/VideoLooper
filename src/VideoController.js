@@ -1,12 +1,9 @@
 chrome.runtime.onMessage.addListener((request, sender, response) => {
   var cmd = { id: request.cmd };
-  var video = document.getElementsByTagName("video")[0];
-  var videoState = {
-    paused: video.paused,
-    currentTime: video.currentTime,
-    playbackRate: video.playbackRate,
-    loop: { startTime: startTime, stopTime: stopTime },
-  };
+  var video = getVideo();
+  if(video == null) return;
+
+  var videoState = getVideoState();
 
   getValues((data) => {
     var currentTimeChanged = false;
@@ -55,36 +52,17 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     }
 
     ensureValidValues(videoState);
-    applyState(videoState, video, currentTimeChanged);
+    setVideoState(videoState, video, currentTimeChanged);
 
-    response(videoState);
+    response(videoState); // respond with current videostate for ui updates
   });
   return true; // keep port open for response from async code
 });
-
-function getCurrentVideoState() {
-  var video = document.getElementsByTagName("video")[0];
-  return {
-    paused: video.paused,
-    currentTime: video.currentTime,
-    playbackRate: video.playbackRate,
-    loop: { startTime: startTime, stopTime: stopTime },
-  };
-}
 
 function ensureValidValues(state) {
   //TODO: constrain other values
   var constrainedRate = constrain(state.playbackRate, 0.1, 5);
   state.playbackRate = constrainedRate.toFixed(1);
-}
-
-function applyState(state, video, setCurrentTime) {
-  state.paused ? video.pause() : video.play();
-  if (setCurrentTime) video.currentTime = state.currentTime;
-  video.playbackRate = state.playbackRate;
-
-  startTime = state.loop.startTime;
-  stopTime = state.loop.stopTime;
 }
 
 function getValues(callback) {
@@ -117,16 +95,6 @@ function nextSpeedValue(curSpeed, speeds) {
   }
 }
 
-function currentVideoState() {
-  var video = document.getElementsByTagName("video")[0];
-  return {
-    paused: video.paused,
-    currentTime: video.currentTime,
-    playbackRate: video.playbackRate,
-    loop: { startTime: startTime, stopTime: stopTime },
-  };
-}
-
 function toggleLoop(loop, currentTime) {
   if (loop.startTime != null && loop.stopTime != null) {
     loop.startTime = null;
@@ -143,21 +111,18 @@ function toggleLoop(loop, currentTime) {
   }
 }
 
-var startTime;
-var stopTime;
-
 var checkLoop = setInterval(enforceLoop, 0.01);
 
 async function enforceLoop() {
-  var video = document.getElementsByTagName("video")[0];
+  var video = getVideo();
   if(video == null) return;
 
   var currentTime = video.currentTime;
+  var loop = getLoopState();
 
-  if (startTime == null || stopTime == null) return;
+  if (loop.startTime == null || loop.stopTime == null) return;
 
-  if (currentTime >= stopTime || currentTime < startTime) {
-    var video = document.getElementsByTagName("video")[0];
-    video.currentTime = startTime;
+  if (currentTime >= loop.stopTime || currentTime < loop.startTime) {
+    video.currentTime = loop.startTime;
   }
 }

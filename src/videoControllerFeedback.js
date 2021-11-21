@@ -1,3 +1,8 @@
+const iconHeight = 100;
+const iconWidth = 100;
+const popupHeight = iconHeight + 40;
+const popupWidth = iconWidth + 40;
+
 chrome.runtime.onMessage.addListener((request, sender, response) => {
   var cmd = { id: request.cmd };
 
@@ -55,11 +60,6 @@ function getLoopStateImage(loop) {
   }
 }
 
-const iconHeight = 100;
-const iconWidth = 100;
-const popupHeight = iconHeight + 40;
-const popupWidth = iconWidth + 40;
-
 function textPopup(text) {
   var container = popupContainer();
 
@@ -85,7 +85,7 @@ function imagePopup(imagePath, width = 100, height = 100) {
 }
 
 function popupContainer() {
-  var video = document.getElementsByTagName("video")[0];
+  var video = getVideo();
 
   var div = document.createElement("div");
   div.width = popupWidth;
@@ -119,6 +119,6 @@ function centerInHost(element, host) {
 function withVideoState(f) {
   // ugly workaround :)
   setTimeout(() => {
-    f(getCurrentVideoState());
+    f(getVideoState());
   }, 80);
 }
